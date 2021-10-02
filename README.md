@@ -1,1 +1,2 @@
 # python-kafka-assignment
+This repository consist of an Assignment based on confluent Kafka, where json format data send to confluent Kafka server and consumed that data and store it to mysql database and created Docker images for it.
