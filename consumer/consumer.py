@@ -17,7 +17,7 @@ running = True
 
 # adding data to mysqldb
 
-engine = create_engine("mysql+mysqlconnector://root:Qwert1234!22@localhost/employee_db", echo = True)
+engine = create_engine("mysql+mysqlconnector://root:Qwert1234@localhost:3309/employee_db", echo = True)
 meta = MetaData()
 connection = engine.connect()
 
@@ -90,6 +90,10 @@ def msg_process(msg):
                     connection.execute(insert_sql2)
     except AttributeError:
         print("String don't have items attribute.")
+
+
+    query = connection.execute("select * from employee")
+    print(query.all())
 # consuming data from kafka 
   
 def basic_consume_loop(consumer, topics):
