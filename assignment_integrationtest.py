@@ -11,7 +11,7 @@ class  TestIntegrate(unittest.TestCase):
         
         consumer.basic_consume_loop(consumer.consumer, ["employee"])
         
-        self.assertEqual(consumer.connection.execute("select * from employee order by emp_id desc").all()[0],(10, 'Yansh', 'Bhardwaj', 'Male', 20, 'Jeoni Mandi', 'Agra', 'UP', 202140))
+        self.assertEqual(consumer.connection.execute("select firstName, lastName from employee order by emp_id desc").all()[0],('Yansh', 'Bhardwaj'))
 
 if __name__ == "__main__":
     unittest.main()
