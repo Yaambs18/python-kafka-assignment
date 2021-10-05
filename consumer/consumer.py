@@ -115,6 +115,8 @@ def basic_consume_loop(consumer, topics):
                 msg_process(msg)
     except KeyboardInterrupt as e:
         print(e)
+    except KafkaException:
+        print("Unknown partition provided")
     finally:
         # Close down consumer to commit final offsets.
         consumer.close()
