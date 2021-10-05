@@ -13,9 +13,10 @@ def acked(err, msg):
 
 # Wait up to 1 second for events. Callbacks will be invoked during
 # this method call if the message is acknowledged.
-producer.poll(1)
+
 
 if __name__ == "__main__":
     json_data = open('data.json', 'r')
     data = json_data.read()
     producer.produce("employee", key="data", value=data, callback=acked(None, "Data sent successfully."))
+    producer.poll(1)

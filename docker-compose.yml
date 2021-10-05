@@ -2,8 +2,6 @@ version: '3'
 services:
   mysql_dev:
     image: mysql:8
-    cap_add:
-      - SYS_NICE 
     environment:
       MYSQL_ROOT_PASSWORD: Qwert1234
       MYSQL_DATABASE: employee_db

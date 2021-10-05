@@ -91,9 +91,9 @@ def msg_process(msg):
     except AttributeError:
         print("String don't have items attribute.")
 
-
-    query = connection.execute("select * from employee")
-    print(query.all())
+    
+    # query = connection.execute("select * from employee")
+    # print(query.all())
 # consuming data from kafka 
   
 def basic_consume_loop(consumer, topics):
@@ -101,7 +101,7 @@ def basic_consume_loop(consumer, topics):
         consumer.subscribe(topics)
 
         while running:
-            msg = consumer.poll(timeout=1.0)
+            msg = consumer.poll(1)
             if msg is None: break
 
             if msg.error():
@@ -115,10 +115,9 @@ def basic_consume_loop(consumer, topics):
                 msg_process(msg)
     except KeyboardInterrupt as e:
         print(e)
-    except KafkaException:
-        print("Unknown partition provided")
     finally:
         # Close down consumer to commit final offsets.
         consumer.close()
 
-basic_consume_loop(consumer, ["employee"])
+if __name__ == "__main__":
+    basic_consume_loop(consumer, ["employee"])
