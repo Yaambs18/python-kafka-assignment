@@ -9,10 +9,11 @@ class TestConsumer(unittest.TestCase):
     def test_table_creation(self):
         self.assertIsNone(consumer.meta.create_all(consumer.engine))
     
+    def test_topic_existence(self):
+        self.assertRaises(TypeError,consumer.basic_consume_loop(consumer.consumer, ['emplo']))
+
     def test_insertion(self):
         self.assertIsNone(consumer.basic_consume_loop(consumer.consumer, ["employee"]))
-
-    
 
 if __name__ =="__main__":
     unittest.main()
