@@ -4,7 +4,7 @@ from producer.producer import acked
 class  TestProducer(unittest.TestCase):
     
     def test_acked(self):
-        self.assertEqual(acked(None,"testing message"),None)
+        self.assertIsNone(acked(None,"testing message"))
         
     def test_type_compatibilty_acked(self):
         self.assertRaises(TypeError,acked(None,00000))
