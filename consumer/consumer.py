@@ -17,7 +17,7 @@ running = True
 
 # adding data to mysqldb
 
-engine = create_engine("mysql+mysqlconnector://root:Qwert1234@localhost:3309/employee_db", echo = True)
+engine = create_engine("mysql+mysqlconnector://yaambs:Qwert1234@0.0.0.0:3306/employee_db", echo = True)
 meta = MetaData()
 connection = engine.connect()
 

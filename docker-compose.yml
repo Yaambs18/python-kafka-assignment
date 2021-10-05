@@ -5,6 +5,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: Qwert1234
       MYSQL_DATABASE: employee_db
+      MYSQL_USER: yaambs
+      MYSQL_PASSWORD: Qwert1234
     ports:
-      - "3309:3306"
-  
+      - "3306:3306"
