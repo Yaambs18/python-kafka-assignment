@@ -1,21 +1,8 @@
-from confluent_kafka import Consumer
-from confluent_kafka import KafkaError
-from confluent_kafka import KafkaException
-import sys
 from sqlalchemy import create_engine,MetaData, Table, Column, VARCHAR, Integer, BIGINT
 import json
 
 from sqlalchemy.sql.schema import ForeignKey
-
-
-conf = {'bootstrap.servers': "localhost:9092",
-        'group.id': "foo",
-        'auto.offset.reset': 'earliest'}
-
-consumer = Consumer(conf)
-running = True
-
-# adding data to mysqldb
+from consumer_ import consumer
 
 engine = create_engine("mysql+mysqlconnector://yaambs:Qwert1234@0.0.0.0:3306/employee_db", echo = True)
 meta = MetaData()
@@ -41,15 +28,14 @@ Table(
     Column('number', VARCHAR(10))
 )
 meta.create_all(engine)
-    
-def msg_process(msg):
-    consumed_data = {}
+consumed_data = consumer.basic_consume_loop(consumer.consumer, ["employee"])
+print(consumed_data)
+def insert_data():
     try:
         last_id_sql = connection.execute("select max(emp_id) from employee")
         last_id = last_id_sql.all()[0][0]
     except ConnectionError:
         print("unable to connect to database.")
-    consumed_data[msg.key().decode('utf-8')] = msg.value().decode('utf-8')
     emp_details_dict = {}
     emp_phone_dict = {}
     if last_id is None:
@@ -90,33 +76,6 @@ def msg_process(msg):
                     connection.execute(insert_sql2)
     except AttributeError:
         print("String don't have items attribute.")
-
+insert_data()
 # query = connection.execute("select * from employee order by emp_id desc")
 # print(query.all()[0])
-# consuming data from kafka 
-  
-def basic_consume_loop(consumer, topics):
-    try:
-        consumer.subscribe(topics)
-
-        while running:
-            msg = consumer.poll(1)
-            if msg is None: break
-
-            if msg.error():
-                if msg.error().code() == KafkaError._PARTITION_EOF:
-                    # End of partition event
-                    sys.stderr.write('%% %s [%d] reached end at offset %d\n' %
-                                     (msg.topic(), msg.partition(), msg.offset()))
-                elif msg.error():
-                    raise KafkaException(msg.error())
-            else:
-                msg_process(msg)
-    except KeyboardInterrupt as e:
-        print(e)
-    except KafkaException:
-        print("Unknown partition provided")
-
-
-if __name__ == "__main__":
-    basic_consume_loop(consumer, ["employee"])

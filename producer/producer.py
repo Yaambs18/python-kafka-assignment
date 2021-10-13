@@ -18,5 +18,5 @@ def acked(err, msg):
 if __name__ == "__main__":
     json_data = open('data.json', 'r')
     data = json_data.read()
-    producer.produce("employee", key="data", value=data, callback=acked(None, "Data sent successfully."))
+    producer.produce("employee_data1", key="data", value=data, callback=acked(None, "Data sent successfully."))
     producer.poll(1)
